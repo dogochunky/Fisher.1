@@ -34,8 +34,7 @@ IS_WIN = sys.platform == "win32"
 # Auto-Update Configuration
 # ---------------------------------------------------------------------------
 CURRENT_VERSION = "1.5.0"
-# Replace with your actual raw JSON URL on GitHub or your server:
-UPDATE_CHECK_URL = "https://raw.githubusercontent.com/YourUsername/YourRepo/main/version.json"
+UPDATE_CHECK_URL = "https://raw.githubusercontent.com/dogochunky/Fisher.1/main/version.json"
 
 
 # ---------------------------------------------------------------------------
@@ -242,11 +241,6 @@ def migrate_settings(s):
 
 def check_for_updates(app_instance, manual=False):
     """Checks remote server for a newer version and prompts user to update."""
-    if "YourUsername/YourRepo" in UPDATE_CHECK_URL:
-        if manual:
-            app_instance.notify("Update URL not configured. Set UPDATE_CHECK_URL in code.", is_error=True)
-        return
-
     try:
         req = urllib.request.Request(UPDATE_CHECK_URL, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(req, timeout=5) as response:
@@ -258,8 +252,8 @@ def check_for_updates(app_instance, manual=False):
                 if messagebox.askyesno("Update Available", f"A new version ({remote_version}) is available!\nWould you like to update and restart now?"):
                     download_and_apply_update(download_url)
             elif manual:
-                app_instance.notify("You are already using the latest version!")
-    except Exception:
+                app_instance.notify("You are using the latest version!")
+    except Exception as e:
         if manual:
             app_instance.notify("Could not connect to update server", is_error=True)
 
